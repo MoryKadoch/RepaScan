@@ -83,7 +83,6 @@ def history():
     user_id = request.json.get('user_id')
     product_code = request.json.get('product_code')
 
-    # Vérifier que l'utilisateur actuel est le même que celui pour qui l'historique est mis à jour
     if current_user != user_id:
         return jsonify({"msg": "Unauthorized access"}), 401
 
