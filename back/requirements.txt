@@ -1,5 +1,6 @@
-Flask==1.1.4
-flask_bcrypt==0.7.1
-pymongo[srv]==3.11.4
-python-dotenv==0.19.0
-flask_jwt_extended==3.25.1
+Flask
+flask_bcrypt
+pymongo[srv]
+python-dotenv
+flask_jwt_extended
+gunicorn
