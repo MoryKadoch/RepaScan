@@ -1,24 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, TextInput, Button, Alert, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
+import UserContext from '../contexts/UserContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { RadioButton } from 'react-native-paper';
 
 const SignUp = ({ navigation }) => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [gender, setGender] = useState('');
+    const { setUser } = useContext(UserContext);
 
     const handleSignUp = async () => {
         try {
-            const response = await axios.post('http://192.168.1.6:5000/signup', {
+            const response = await axios.post(API_BASE_URL + '/signup', {
                 firstName: firstName,
                 lastName: lastName,
                 email: email,
-                password: password
+                password: password,
+                gender: gender
             });
             if (response.data) {
                 Alert.alert('Inscription terminée', 'Inscription pour ' + email + ' réussie!');
-                navigation.navigate('Main', { screen: 'Scan' });
+                setUser(response.data);
+                await AsyncStorage.setItem('@user', JSON.stringify(response.data));
             }
         } catch (error) {
             console.error(error);
@@ -56,6 +64,15 @@ const SignUp = ({ navigation }) => {
                 style={styles.input}
                 autoCapitalize='none'
             />
+            <Text>Vous êtes :</Text>
+            <RadioButton.Group onValueChange={newValue => setGender(newValue)} value={gender}>
+                <View style={styles.radioButton}>
+                    <Text>Un homme</Text>
+                    <RadioButton value="homme" />
+                    <Text>Une femme</Text>
+                    <RadioButton value="femme" />
+                </View>
+            </RadioButton.Group>
             <View style={styles.buttonContainer}>
                 <Button
                     title={'S\'inscrire'}
@@ -64,7 +81,7 @@ const SignUp = ({ navigation }) => {
                 />
             </View>
             <View style={styles.alreadyAccountContainer}>
-                <Text style={styles.alreadyAccountText}>Vous avez déjà un compte?</Text>
+                <Text style={styles.alreadyAccountText}>Vous avez déjà un compte ?</Text>
                 <TouchableOpacity onPress={() => navigation.navigate('LogIn')}>
                     <Text style={styles.loginText}>Se connecter</Text>
                 </TouchableOpacity>
@@ -86,6 +103,10 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginBottom: 20,
         padding: 10,
+    },
+    radioButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
     },
     buttonContainer: {
         marginTop: 10,

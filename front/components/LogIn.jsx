@@ -2,31 +2,33 @@ import React, { useState, useContext } from 'react';
 import { View, TextInput, Button, Alert, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 import UserContext from '../contexts/UserContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { API_BASE_URL } from '../config';
 
 const LogIn = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const { setUser } = useContext(UserContext);
+    const { setUser, user } = useContext(UserContext);
 
     const handleLogIn = async () => {
         try {
-            const response = await axios.post('http://192.168.1.6:5000/login', {
+            const response = await axios.post(API_BASE_URL + '/login', {
                 email: email,
                 password: password
             });
             if (response.data.id) {
-                Alert.alert('Connexion réussie', 'Bienvenue ' + email + '!');
-                setUser({ id: response.data.id, email: email });
-                navigation.navigate('Main', { screen: 'Scan' });
-            }
-            if (response.data === "Wrong credentials") {
-                Alert.alert('Erreur', 'Mot de passe incorrect.');
+                setUser(response.data);
+                await AsyncStorage.setItem('@user', JSON.stringify(response.data));
+                navigation.navigate('Main', { screen: 'Rerchercher' });
+            } else if (response.data === "Wrong credentials") {
+                Alert.alert('Erreur', 'Mot de passe ou email incorrect.');
             }
         } catch (error) {
             console.error(error);
             Alert.alert('Erreur', 'Une erreur est survenue lors de la connexion.');
         }
     };
+    
 
     return (
         <View style={styles.container}>

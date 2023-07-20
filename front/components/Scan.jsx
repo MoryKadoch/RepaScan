@@ -1,13 +1,19 @@
 import React, { useState, useEffect, useContext } from 'react';
+import UserContext from '../contexts/UserContext';
 import { Text, View, StyleSheet } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import axios from 'axios';
-import UserContext from '../contexts/UserContext'; // Assurez-vous que le chemin est correct
+import { API_BASE_URL } from '../config';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
-const Scan = () => {
+const Scan = ({ navigation }) => {
     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
-    const { user } = useContext(UserContext); // Accéder à l'utilisateur à partir du contexte
+    const { user } = useContext(UserContext);
+
+    navigation.setOptions({
+        title: 'Scanner un produit',
+    });
 
     useEffect(() => {
         (async () => {
@@ -16,21 +22,40 @@ const Scan = () => {
         })();
     }, []);
 
+    useFocusEffect(
+        React.useCallback(() => {
+            setScanned(false);
+        }, [])
+    );
+
     const handleBarCodeScanned = ({ type, data }) => {
         setScanned(true);
         axios.get(`https://world.openfoodfacts.net/api/v2/product/${data}.json`)
             .then((response) => {
-               // console.log(response.data.product);
-                console.log(user.id); 
-            }
-            );
+                axios.post(API_BASE_URL + '/history', {
+                    user_id: user.id,
+                    product_code: data,
+                }, {
+                    headers: {
+                        'Authorization': `Bearer ${user.access_token}`
+                    }
+                })
+                    .then(response => console.log(response))
+                    .catch(
+                        error => {
+                            console.error(error);
+                            alert('Produit introuvable');
+                        }
+                    );
+                navigation.navigate('ProductDetail', { product: response.data.product });
+            });
     };
 
     if (hasPermission === null) {
-        return <Text>Requesting for camera permission</Text>;
+        return <Text>Demande d'accès à la caméra</Text>;
     }
     if (hasPermission === false) {
-        return <Text>No access to camera</Text>;
+        return <Text>Pas d'accès à la caméra</Text>;
     }
 
     return (
