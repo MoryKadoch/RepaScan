@@ -32,47 +32,47 @@ const Goals = () => {
             }
         }, [user]));
 
-        const handleGoals = async () => {
-            try {
-                const updatedGoals = {
-                    'goals.calories': calories,
-                    'goals.weightGoal': goalWeight,
-                };
-        
-                const newWeightRecord = {
-                    date: new Date(),
-                    weight: currentWeight
-                };
-        
-                const responseGoals = await axios.put(API_BASE_URL + '/user/update/' + user.id, 
-                    updatedGoals, 
-                    {
-                        headers: {
-                            Authorization: `Bearer ${user.access_token}`,
-                            'Content-Type': 'application/json'
-                        }
+    const handleGoals = async () => {
+        try {
+            const updatedGoals = {
+                'goals.calories': calories,
+                'goals.weightGoal': goalWeight,
+            };
+
+            const newWeightRecord = {
+                date: new Date(),
+                weight: currentWeight
+            };
+
+            const responseGoals = await axios.put(API_BASE_URL + '/user/update/' + user.id,
+                updatedGoals,
+                {
+                    headers: {
+                        Authorization: `Bearer ${user.access_token}`,
+                        'Content-Type': 'application/json'
                     }
-                );
-        
-                const responseWeightRecord = await axios.put(API_BASE_URL + '/user/update/' + user.id, 
-                    { 'goals.weightRecords': newWeightRecord }, 
-                    {
-                        headers: {
-                            Authorization: `Bearer ${user.access_token}`,
-                            'Content-Type': 'application/json'
-                        }
-                    }
-                );
-        
-                if (responseGoals.data && responseWeightRecord.data) {
-                    Alert.alert('Mise à jour réussie', 'Vos objectifs ont été mis à jour.');
                 }
-            } catch (error) {
-                console.error(error);
-                Alert.alert('Erreur', 'Une erreur s\'est produite pendant la mise à jour.');
+            );
+
+            const responseWeightRecord = await axios.put(API_BASE_URL + '/user/update/' + user.id,
+                { 'goals.weightRecords': newWeightRecord },
+                {
+                    headers: {
+                        Authorization: `Bearer ${user.access_token}`,
+                        'Content-Type': 'application/json'
+                    }
+                }
+            );
+
+            if (responseGoals.data && responseWeightRecord.data) {
+                Alert.alert('Mise à jour réussie', 'Vos objectifs ont été mis à jour.');
             }
-        };
-        
+        } catch (error) {
+            console.error(error);
+            Alert.alert('Erreur', 'Une erreur s\'est produite pendant la mise à jour.');
+        }
+    };
+
 
     return (
         <View style={styles.container}>

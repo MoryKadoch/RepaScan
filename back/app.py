@@ -7,6 +7,8 @@ from flask_jwt_extended import JWTManager, jwt_required, create_access_token, ge
 from dotenv import load_dotenv
 import os
 
+load_dotenv()
+
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
 client = MongoClient(os.getenv('MONGO_URI'))
@@ -19,7 +21,6 @@ jwt = JWTManager(app)
 @app.route('/')
 def index():
     return "Hello World!"
-
 
 @app.route('/signup', methods=['POST'])
 def signup():
@@ -210,4 +211,4 @@ def delete_user(user_id):
 
 
 if __name__ == '__main__':
-    app.run(debug=os.getenv('FLASK_DEBUG', 'False') == 'True', host='0.0.0.0')
+    app.run(debug=True)
