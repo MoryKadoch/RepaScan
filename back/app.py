@@ -104,8 +104,11 @@ def signup():
     email = request.json.get('email')
     password = bcrypt.generate_password_hash(request.json.get('password')).decode('utf-8')
     gender = request.json.get('gender')
-
     calories = 2400 if gender == 'homme' else 1800
+
+    # Check if user already exists
+    if users.find_one({'email': email}):
+        return "User already exists", 409
 
     goals = {
         'weightGoal': None,
