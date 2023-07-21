@@ -90,7 +90,7 @@ def privacy():
 <h2>Contactez nous</h2>
 <p>Si vous avez des questions concernant cette politique de confidentialité, veuillez nous contacter:</p>
 <ul>
-<li>Par email: [Votre email]</li>
+<li>Par email: contact@kadoch.dev</li>
 </ul>
 </body>
 </html>
