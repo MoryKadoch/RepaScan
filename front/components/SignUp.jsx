@@ -64,13 +64,7 @@ const SignUp = ({ navigation }) => {
             />
             <TextInput
                 value={password}
-                onChangeText={(password) => {
-                    if (password.length >= 6) {
-                        setPassword(password);
-                    } else {
-                        Alert.alert('Erreur', 'Le mot de passe doit contenir au moins 6 caractères.');
-                    }
-                }}
+                onChangeText={(password) => setPassword(password)}
                 placeholder={'Mot de passe'}
                 secureTextEntry={true}
                 style={styles.input}
