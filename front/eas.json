@@ -27,8 +27,9 @@
                 "simulator": true
             },
             "android": {
-                "buildType": "apk"
-            }
+                "buildType": "apk",
+                "gradleCommand": ":app:bundleRelease"
+            }            
         }
     },
     "submit": {

@@ -1,9 +1,10 @@
 import React, { useState, useContext } from 'react';
-import { View, TextInput, Button, Alert, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, TextInput, Button, Alert, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
 import axios from 'axios';
 import UserContext from '../contexts/UserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API_BASE_URL } from '../config';
+import logo from '../assets/RepaScan-logo.png';
 
 const LogIn = ({ navigation }) => {
     const [email, setEmail] = useState('');
@@ -28,10 +29,11 @@ const LogIn = ({ navigation }) => {
             Alert.alert('Erreur', 'Une erreur est survenue lors de la connexion.');
         }
     };
-    
+
 
     return (
         <View style={styles.container}>
+            <Image source={logo} style={styles.logo} />
             <Text style={styles.title}>Connexion</Text>
             <TextInput
                 value={email}
@@ -97,6 +99,13 @@ const styles = StyleSheet.create({
     },
     loginText: {
         color: '#007BFF',
+    },
+    logo: {
+        width: 200,
+        height: 200,
+        resizeMode: 'contain',
+        alignSelf: 'center',
+        marginBottom: 20,
     },
 });
 

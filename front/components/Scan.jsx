@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import UserContext from '../contexts/UserContext';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, ActivityIndicator } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import axios from 'axios';
 import { API_BASE_URL } from '../config';
@@ -9,6 +9,7 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 const Scan = ({ navigation }) => {
     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
+    const [loading, setLoading] = useState(false);
     const { user } = useContext(UserContext);
 
     navigation.setOptions({
@@ -30,6 +31,7 @@ const Scan = ({ navigation }) => {
 
     const handleBarCodeScanned = ({ type, data }) => {
         setScanned(true);
+        setLoading(true);
         axios.get(`https://world.openfoodfacts.net/api/v2/product/${data}.json`)
             .then((response) => {
                 axios.post(API_BASE_URL + '/history', {
@@ -48,7 +50,8 @@ const Scan = ({ navigation }) => {
                         }
                     );
                 navigation.navigate('ProductDetail', { product: response.data.product });
-            });
+            })
+            .finally(() => setLoading(false));
     };
 
     if (hasPermission === null) {
@@ -65,10 +68,14 @@ const Scan = ({ navigation }) => {
                 flexDirection: 'column',
                 justifyContent: 'flex-end',
             }}>
-            <BarCodeScanner
-                onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-                style={StyleSheet.absoluteFillObject}
-            />
+            {loading ? (
+                <ActivityIndicator size="large" color="#0000ff" />
+            ) : (
+                <BarCodeScanner
+                    onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+                    style={StyleSheet.absoluteFillObject}
+                />
+            )}
         </View>
     );
 }

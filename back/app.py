@@ -65,8 +65,6 @@ def privacy():
 <h2>Transfert de données</h2>
 <p>Vos informations, y compris les données personnelles, peuvent être transférées vers - et conservées sur - des ordinateurs situés en dehors de votre état, province, pays ou autre juridiction gouvernementale où les lois sur la protection des données peuvent différer de celles de votre juridiction.</p>
 
-<p>Si vous êtes situé en dehors de [votre pays] et choisissez de fournir des informations à nous, veuillez noter que nous transférons les données, y compris les données personnelles, à [votre pays] et les traitons là-bas.</p>
-
 <p>Votre consentement à cette politique de confidentialité, suivi de votre soumission de ces informations, représente votre accord à ce transfert.</p>
 
 <h2>Divulgation de données</h2>

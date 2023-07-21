@@ -5,7 +5,6 @@ import UserContext from '../contexts/UserContext';
 import { useFocusEffect } from '@react-navigation/native';
 import { API_BASE_URL } from '../config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Surface, Shape, Path } from '@react-native-community/art';
 import Svg, { Line, Circle } from 'react-native-svg';
 import moment from 'moment';
 
@@ -72,22 +71,6 @@ const Dashboard = ({ navigation }) => {
         const y = ((point - minDataPoint) / (maxDataPoint - minDataPoint)) * height;
         return { x, y };
     });
-
-    let path = new Path();
-    let dataPointsSvgElement = null;
-
-    if (dataPointsSvg.length > 0) {
-        path.moveTo(dataPointsSvg[0].x, dataPointsSvg[0].y);
-        dataPointsSvg.forEach((point, index) => {
-            if (index !== 0) {
-                path.lineTo(point.x, point.y);
-            }
-        });
-
-        dataPointsSvgElement = dataPointsSvg.map((point, index) => {
-            return <Circle key={index} cx={point.x} cy={point.y} r={4} stroke="#000000" fill="#000000" />;
-        });
-    }
 
     return (
         <View style={styles.container}>

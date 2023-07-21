@@ -1,10 +1,11 @@
 import React, { useState, useContext } from 'react';
-import { View, TextInput, Button, Alert, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, TextInput, Button, Alert, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
 import axios from 'axios';
 import { API_BASE_URL } from '../config';
 import UserContext from '../contexts/UserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RadioButton } from 'react-native-paper';
+import logo from '../assets/RepaScan-logo.png';
 
 const SignUp = ({ navigation }) => {
     const [firstName, setFirstName] = useState('');
@@ -36,6 +37,7 @@ const SignUp = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
+            <Image source={logo} style={styles.logo} />
             <Text style={styles.title}>Inscription</Text>
             <TextInput
                 value={firstName}
@@ -126,6 +128,13 @@ const styles = StyleSheet.create({
     },
     loginText: {
         color: '#007BFF',
+    },
+    logo: {
+        width: 150,
+        height: 150,
+        resizeMode: 'contain',
+        alignSelf: 'center',
+        marginBottom: 20,
     },
 });
 
