@@ -5,7 +5,6 @@ import UserContext from '../contexts/UserContext';
 import { useFocusEffect } from '@react-navigation/native';
 import { API_BASE_URL } from '../config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Svg, { Line, Circle } from 'react-native-svg';
 import moment from 'moment';
 
 const { width, height } = Dimensions.get('window');
@@ -63,9 +62,16 @@ const Dashboard = ({ navigation }) => {
         }, [user])
     );
 
-    const maxDataPoint = Math.max(...weightData);
-    const minDataPoint = Math.min(...weightData);
+    let maxDataPoint = Math.max(...weightData);
+    if (maxDataPoint === -Infinity) {
+        maxDataPoint = 0;
+    }
+    let minDataPoint = Math.min(...weightData);
+    if (minDataPoint === Infinity) {
+        minDataPoint = 0;
+    }
 
+    // Tentative de graphique à reprendre plus tard
     const dataPointsSvg = weightData.map((point, index) => {
         const x = (width / (weightData.length - 1)) * index;
         const y = ((point - minDataPoint) / (maxDataPoint - minDataPoint)) * height;
@@ -77,9 +83,9 @@ const Dashboard = ({ navigation }) => {
             <Text style={styles.calories}>Calories restantes : {remainingCalories} kcal</Text>
             <Text style={styles.calories}>Calories consommées aujourd'hui : {consumedCalories} kcal</Text>
             <Text style={styles.calories}>Objectif calorique : {calories} kcal</Text>
-            <Text style={styles.calories}>Poids actuel : {weightData.length > 0 ? weightData[weightData.length - 1] : 0} kg</Text>
-            <Text style={styles.calories}>Poids le plus élevé : {maxDataPoint} kg</Text>
-            <Text style={styles.calories}>Poids le plus bas : {minDataPoint} kg</Text>
+            <Text style={styles.calories}>Poids actuel : {weightData.length > 0 ? weightData[weightData.length - 1] + ' kg' : 'À définir'}</Text>
+            <Text style={styles.calories}>Poids le plus élevé : {maxDataPoint ? maxDataPoint + ' kg' : 'À définir'}</Text>
+            <Text style={styles.calories}>Poids le plus bas : {minDataPoint ? minDataPoint + ' kg' : 'À définir'}</Text>
             <Button title="Modifier mes objectifs" onPress={() => navigation.navigate('Objectifs')} />
         </View>
     );

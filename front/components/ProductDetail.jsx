@@ -88,8 +88,7 @@ const ProductDetail = ({ route, navigation }) => {
                 <Text style={styles.productDescription}>{productDetails.description || "Description non renseignée"}</Text>
                 <Text style={styles.info}>Code-barres : {productDetails.code}</Text>
                 <Text style={styles.info}>Marque : {productDetails.brands || "Marque non renseignée"}</Text>
-                <Text style={styles.info}>Catégorie : {productDetails.categories || "Catégorie non renseignée"}</Text>
-                <Text style={styles.info}>Ingrédients : {productDetails.ingredients_text || "Ingrédients non renseignés"}</Text>
+                <Text style={styles.info}>Ingrédients : {productDetails.ingredients_text_fr || "Ingrédients non renseignés"}</Text>
                 <Text style={styles.info}>Allergènes : {productDetails.allergens || "Allergènes non renseignés"}</Text>
                 <Text style={styles.info}>Traces potentielles : {productDetails.traces || "Aucune trace potentielle renseignée"}</Text>
                 {productDetails.nutriscore_grade && (

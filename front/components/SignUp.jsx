@@ -16,6 +16,10 @@ const SignUp = ({ navigation }) => {
     const { setUser } = useContext(UserContext);
 
     const handleSignUp = async () => {
+        if (firstName === '' || lastName === '' || email === '' || password === '' || gender === '') {
+            Alert.alert('Erreur', 'Tous les champs doivent être remplis.');
+            return;
+        }
         try {
             const response = await axios.post(API_BASE_URL + '/signup', {
                 firstName: firstName,
@@ -60,7 +64,13 @@ const SignUp = ({ navigation }) => {
             />
             <TextInput
                 value={password}
-                onChangeText={(password) => setPassword(password)}
+                onChangeText={(password) => {
+                    if (password.length >= 6) {
+                        setPassword(password);
+                    } else {
+                        Alert.alert('Erreur', 'Le mot de passe doit contenir au moins 6 caractères.');
+                    }
+                }}
                 placeholder={'Mot de passe'}
                 secureTextEntry={true}
                 style={styles.input}
