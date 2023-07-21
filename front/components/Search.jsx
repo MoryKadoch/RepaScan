@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import UserContext from '../contexts/UserContext';
 import { View, TextInput, Button, StyleSheet, FlatList, TouchableOpacity, Text, Image, ActivityIndicator } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import { API_BASE_URL } from '../config';
 
@@ -13,6 +13,14 @@ const Search = () => {
     const navigation = useNavigation();
     const { user } = useContext(UserContext);
 
+    useFocusEffect(
+        React.useCallback(() => {
+            setSearchMode(false);
+            setSearchTerm("");
+            setSearchResults([]);
+        }, [])
+    );
+    
     const handleScan = () => {
         navigation.navigate('Scan');
     };

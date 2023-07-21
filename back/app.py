@@ -24,6 +24,80 @@ jwt = JWTManager(app)
 def index():
     return "Hello World!"
 
+@app.route('/privacy')
+def privacy():
+    html = """
+    <!DOCTYPE html>
+<html>
+<body>
+<h2>Politique de Confidentialité de RepaScan</h2>
+<p>Date de prise d'effet: 21 Juillet 2023</p>
+
+<p>Kadoch Dev ("nous", "notre", "nos") opère l'application mobile RepaScan (ci-après, l'"Application").</p>
+
+<p>Cette page vous informe de nos politiques en matière de collecte, d'utilisation et de divulgation de données personnelles lorsque vous utilisez notre Application et des choix dont vous disposez associés à ces données.</p>
+
+<h2>Collecte et utilisation des données</h2>
+<p>Nous collectons plusieurs types de données à différentes fins pour fournir et améliorer notre Application.</p>
+
+<h3>Données personnelles</h3>
+<p>Lorsque vous utilisez notre Application, nous pouvons vous demander de nous fournir certaines informations personnellement identifiables qui peuvent être utilisées pour vous contacter ou vous identifier ("Données Personnelles"). Les informations personnellement identifiables peuvent inclure, mais ne sont pas limitées à:</p>
+
+<ul>
+<li>Prénom et Nom</li>
+<li>Email</li>
+<li>Mot de passe</li>
+<li>Genre</li>
+</ul>
+
+<h2>Utilisation des données</h2>
+<p>Kadoch Dev utilise les données collectées à des fins diverses:</p>    
+<ul>
+<li>Pour fournir et maintenir notre Application</li>
+<li>Pour vous informer des modifications de notre Application</li>
+<li>Pour vous permettre de participer aux fonctions interactives de notre Application lorsque vous choisissez de le faire</li>
+<li>Pour fournir un support client</li>
+<li>Pour recueillir des analyses ou des informations précieuses afin que nous puissions améliorer notre Application</li>
+<li>Pour surveiller l'utilisation de notre Application</li>
+<li>Pour détecter, prévenir et résoudre les problèmes techniques</li>
+</ul>
+
+<h2>Transfert de données</h2>
+<p>Vos informations, y compris les données personnelles, peuvent être transférées vers - et conservées sur - des ordinateurs situés en dehors de votre état, province, pays ou autre juridiction gouvernementale où les lois sur la protection des données peuvent différer de celles de votre juridiction.</p>
+
+<p>Si vous êtes situé en dehors de [votre pays] et choisissez de fournir des informations à nous, veuillez noter que nous transférons les données, y compris les données personnelles, à [votre pays] et les traitons là-bas.</p>
+
+<p>Votre consentement à cette politique de confidentialité, suivi de votre soumission de ces informations, représente votre accord à ce transfert.</p>
+
+<h2>Divulgation de données</h2>
+<p>Nous pouvons divulguer vos données personnelles dans la conviction de bonne foi que cela est nécessaire pour:</p>
+<ul>
+<li>Se conformer à une obligation légale</li>
+<li>Protéger et défendre les droits ou la propriété de Kadoch Dev</li>
+<li>Prévenir ou enquêter sur d'éventuelles fautes liées à l'Application</li>
+<li>Protéger la sécurité personnelle des utilisateurs de l'Application ou du public</li>
+<li>Protéger contre la responsabilité juridique</li>
+</ul>
+
+<h2>Sécurité des données</h2>
+<p>La sécurité de vos données est importante pour nous, mais rappelez-vous qu'aucune méthode de transmission sur Internet ou méthode de stockage électronique n'est 100% sûre. Bien que nous nous efforcions d'utiliser des moyens commercialement acceptables pour protéger vos données personnelles, nous ne pouvons garantir sa sécurité absolue.</p>
+
+<h2>Modifications de cette politique de confidentialité</h2>
+<p>Nous pouvons mettre à jour notre politique de confidentialité de temps à autre. Nous vous informerons de tout changement en publiant la nouvelle politique de confidentialité sur cette page.</p>
+
+<p>Il vous est conseillé de consulter cette politique de confidentialité périodiquement pour tout changement. Les changements à cette politique de confidentialité sont effectifs lorsqu'ils sont publiés sur cette page.</p>
+
+<h2>Contactez nous</h2>
+<p>Si vous avez des questions concernant cette politique de confidentialité, veuillez nous contacter:</p>
+<ul>
+<li>Par email: [Votre email]</li>
+</ul>
+</body>
+</html>
+    """
+    return html
+
+
 @app.route('/signup', methods=['POST'])
 def signup():
     users = db.users

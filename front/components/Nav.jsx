@@ -49,8 +49,8 @@ function TabNavigator() {
                 ]
             })}
         >
-            <Tab.Screen name="Rechercher" component={Search} />
             <Tab.Screen name="Tableau de bord" component={Dashboard} />
+            <Tab.Screen name="Rechercher" component={Search} />
             <Tab.Screen name="Scan" component={Scan} options={{ tabBarButton: () => null, tabBarVisible: false }} />
             <Tab.Screen name="Historique" component={History} />
             <Tab.Screen name="ProductDetail" component={ProductDetail} options={{ tabBarButton: () => null, tabBarVisible: false }} />

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, Button, Modal, TextInput } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import moment from 'moment';
 
 const ProductDetail = ({ route, navigation }) => {
     const { product } = route.params;
@@ -23,14 +24,15 @@ const ProductDetail = ({ route, navigation }) => {
                 console.error(error);
             });
 
-        // Get the current total of consumed calories from AsyncStorage
         AsyncStorage.getItem('@caloriesConsumed')
             .then((value) => {
-                if (value === null || value === undefined || value === '' || isNaN(value)) {
+                if (value) {
+                    console.log(value);
+                    const data = JSON.parse(value);
+                    const currentDayData = data.find(d => d.date === moment().format('YYYY-MM-DD'));
+                    setCaloriesConsumed(currentDayData ? currentDayData.calories : 0);
+                } else {
                     setCaloriesConsumed(0);
-                }
-                else {
-                    setCaloriesConsumed(parseInt(value));
                 }
             })
             .catch((error) => {
@@ -44,10 +46,28 @@ const ProductDetail = ({ route, navigation }) => {
         const totalCalories = caloriesConsumed + consumedCalories;
         console.log(caloriesConsumed);
 
-        AsyncStorage.setItem('@caloriesConsumed', totalCalories.toString())
-            .then(() => {
-                setCaloriesConsumed(totalCalories);
-                setModalVisible(false);
+        AsyncStorage.getItem('@caloriesConsumed')
+            .then((value) => {
+                const currentDate = moment().format('YYYY-MM-DD');
+                let data = [];
+                if (value) {
+                    data = JSON.parse(value);
+                }
+                const currentDayData = data.find(d => d.date === currentDate);
+                if (currentDayData) {
+                    currentDayData.calories += consumedCalories;
+                } else {
+                    data.push({ date: currentDate, calories: consumedCalories });
+                }
+
+                AsyncStorage.setItem('@caloriesConsumed', JSON.stringify(data))
+                    .then(() => {
+                        setCaloriesConsumed(totalCalories);
+                        setModalVisible(false);
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    });
             })
             .catch((error) => {
                 console.error(error);

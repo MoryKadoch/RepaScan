@@ -7,12 +7,13 @@ import { API_BASE_URL } from '../config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Surface, Shape, Path } from '@react-native-community/art';
 import Svg, { Line, Circle } from 'react-native-svg';
+import moment from 'moment';
 
 const { width, height } = Dimensions.get('window');
 
 const Dashboard = ({ navigation }) => {
     const { user } = useContext(UserContext);
-    const [remainingCalories, setRemainingCalories] = useState(0); 
+    const [remainingCalories, setRemainingCalories] = useState(0);
     const [weightData, setWeightData] = useState([]);
     const [consumedCalories, setConsumedCalories] = useState(0);
     const [calories, setCalories] = useState(0);
@@ -20,8 +21,14 @@ const Dashboard = ({ navigation }) => {
 
     const getCalories = async () => {
         try {
-            const calories = await AsyncStorage.getItem('@caloriesConsumed');
-            setConsumedCalories(calories ? parseInt(calories) : 0);
+            const value = await AsyncStorage.getItem('@caloriesConsumed');
+            if (value) {
+                const data = JSON.parse(value);
+                const currentDayData = data.find(d => d.date === moment().format('YYYY-MM-DD'));
+                setConsumedCalories(currentDayData ? currentDayData.calories : 0);
+            } else {
+                setConsumedCalories(0);
+            }
         } catch (error) {
             console.error(error);
         }
@@ -41,7 +48,7 @@ const Dashboard = ({ navigation }) => {
                 setWeightData(weightRecords);
                 setRemainingCalories(userData.goals.calories - consumedCalories);
                 setCalories(userData.goals.calories);
-                setDataLoaded(true); 
+                setDataLoaded(true);
             }
         } catch (error) {
             console.error(error);
@@ -54,7 +61,7 @@ const Dashboard = ({ navigation }) => {
                 getCalories();
                 fetchUserData();
             }
-        }, [user, consumedCalories])
+        }, [user])
     );
 
     const maxDataPoint = Math.max(...weightData);
