@@ -20,6 +20,7 @@ const SignUp = ({ navigation }) => {
             Alert.alert('Erreur', 'Tous les champs doivent être remplis.');
             return;
         }
+        // if password length < 8
         try {
             const response = await axios.post(API_BASE_URL + '/signup', {
                 firstName: firstName,
