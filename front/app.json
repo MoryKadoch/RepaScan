@@ -2,7 +2,7 @@
   "expo": {
     "name": "RepaScan",
     "slug": "RepaScan",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "orientation": "portrait",
     "icon": "./assets/RepaScan-logo-app.png",
     "userInterfaceStyle": "light",
@@ -19,11 +19,11 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/RepaScan.png",
+        "foregroundImage": "./assets/RepaScan-logo-app.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.repa.scan",
-      "versionCode": 5
+      "versionCode": 6
     },
     "web": {
       "favicon": "./assets/RepaScan.png"
