@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, StyleSheet, ScrollView, Button, Modal, TextInput } from 'react-native';
+import { View, Text, Image, StyleSheet, ScrollView, Button, Modal, TextInput, Alert } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
@@ -41,7 +41,7 @@ const ProductDetail = ({ route, navigation }) => {
     }, [product]);
 
     const handleValidateButtonPress = () => {
-        alert('Produit ajouté à votre consommation du jour');
+        Alert.alert('Produit ajouté', 'Le produit a bien été ajouté à votre consommation du jour.');
         const consumedCalories = productDetails.nutriments["energy-kcal_100g"] * (consumedGrams / 100);
         const totalCalories = caloriesConsumed + consumedCalories;
         console.log(caloriesConsumed);

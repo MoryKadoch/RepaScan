@@ -18,18 +18,23 @@ const Dashboard = ({ navigation }) => {
     const [dataLoaded, setDataLoaded] = useState(false);
 
     const getCalories = async () => {
+        let cal = 0;
         try {
             const value = await AsyncStorage.getItem('@caloriesConsumed');
             if (value) {
                 const data = JSON.parse(value);
                 const currentDayData = data.find(d => d.date === moment().format('YYYY-MM-DD'));
-                setConsumedCalories(currentDayData ? currentDayData.calories : 0);
+                cal = currentDayData ? currentDayData.calories : 0;
             } else {
-                setConsumedCalories(0);
+                cal = 0;
             }
         } catch (error) {
             console.error(error);
         }
+
+        setConsumedCalories(cal);
+
+        return cal;
     };
 
     const fetchUserData = async () => {
@@ -44,7 +49,7 @@ const Dashboard = ({ navigation }) => {
             if (userData && userData.goals) {
                 const weightRecords = userData.goals.weightRecords.map(record => parseInt(record.weight));
                 setWeightData(weightRecords);
-                setRemainingCalories(userData.goals.calories - consumedCalories);
+                setRemainingCalories(userData.goals.calories - await getCalories());
                 setCalories(userData.goals.calories);
                 setDataLoaded(true);
             }
