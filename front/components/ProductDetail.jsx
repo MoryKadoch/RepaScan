@@ -110,9 +110,15 @@ const ProductDetail = ({ route, navigation }) => {
                     )}
             </ScrollView>
 
+            {productDetails.nutriments && productDetails.nutriments["energy-kcal_100g"] && (
             <View style={styles.floatingButton}>
                 <Button title="Ajouter à ma consommation du jour" onPress={() => setModalVisible(true)} />
             </View>
+            ) || (
+                <View style={styles.floatingButton}>
+                    <Button title="Ajouter à ma consommation du jour" onPress={() => alert('Impossible d\'ajouter ce produit à votre consommation du jour car les informations nutritionnelles ne sont pas renseignées.')} />
+                </View>
+            )}
 
             <Modal
                 animationType="slide"

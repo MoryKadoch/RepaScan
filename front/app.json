@@ -4,7 +4,7 @@
     "slug": "RepaScan",
     "version": "1.0.3",
     "orientation": "portrait",
-    "icon": "./assets/RepaScan.png",
+    "icon": "./assets/RepaScan-logo-app.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/RepaScan.png",

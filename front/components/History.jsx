@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, Image, FlatList, TouchableOpacity, Alert, Button, StyleSheet } from 'react-native';
+import { View, Text, Image, FlatList, TouchableOpacity, Alert, Button, StyleSheet, ActivityIndicator } from 'react-native';
 import axios from 'axios';
 import UserContext from '../contexts/UserContext';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
@@ -9,6 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const History = () => {
     const [history, setHistory] = useState([]);
     const { user, setUser } = useContext(UserContext);
+    const [loading, setLoading] = useState(false);
     const navigation = useNavigation();
 
     const handleLogout = async () => {
@@ -18,6 +19,7 @@ const History = () => {
     };
 
     const fetchHistory = async () => {
+        setLoading(true);
         try {
             const response = await axios.get(API_BASE_URL + '/history/' + user.id, {
                 headers: {
@@ -38,6 +40,8 @@ const History = () => {
             console.error(error);
             //Alert.alert('Error', 'An error occurred while fetching the history.');
             handleLogout();
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -65,9 +69,8 @@ const History = () => {
                 {
                     text: "OK",
                     onPress: () => {
-                        axios.delete(`http://10.74.3.105:5000/history/${user.id}/${product.code}`)
+                        axios.delete(API_BASE_URL + '/history/' + user.id + '/' + product.code)
                             .then(response => {
-                                // Refresh history after delete
                                 axios.get(API_BASE_URL + '/history/' + user.id, {
                                     headers: {
                                         'Authorization': `Bearer ${user.access_token}`
@@ -92,15 +95,17 @@ const History = () => {
         );
     };
 
-    const handleScan = () => {
-        navigation.navigate('Scan');
+    const handleSearch = () => {
+        navigation.navigate('Rechercher');
     };
 
-    if (history.length === 0) {
+    if (loading) {
+        return <ActivityIndicator size="large" color="#0000ff" />
+    } else if (history.length === 0) {
         return (
             <View style={styles.container}>
-                <Text style={styles.message}>Aucun scan pour l'instant.</Text>
-                <Button onPress={handleScan} title="Scanner un produit" color="#841584" accessibilityLabel="Scan a product" />
+                <Text style={styles.message}>Aucun produit consulté.</Text>
+                <Button onPress={handleSearch} title="Rechercher un produit" accessibilityLabel="Scan a product" />
             </View>
         );
     } else {
